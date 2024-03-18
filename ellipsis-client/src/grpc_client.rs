@@ -13,7 +13,8 @@ use {
     std::collections::HashMap,
     yellowstone_grpc_client::{GeyserGrpcClient, GeyserGrpcClientError},
     yellowstone_grpc_proto::prelude::{
-        subscribe_update::UpdateOneof, SubscribeRequest, SubscribeRequestFilterTransactions,
+        subscribe_update::UpdateOneof, CommitmentLevel, SubscribeRequest,
+        SubscribeRequestFilterTransactions,
     },
 };
 
@@ -129,7 +130,7 @@ pub async fn transaction_subscribe(
                 .into_iter()
                 .map(|x| x.to_string())
                 .collect(),
-            account_required: vec![] 
+            account_required: vec![],
         },
     );
 
@@ -151,7 +152,7 @@ pub async fn transaction_subscribe(
                     transactions,
                     blocks: HashMap::new(),
                     blocks_meta: HashMap::new(),
-                    commitment: None, 
+                    commitment: Some(CommitmentLevel::Confirmed.into()),
                     accounts_data_slice: vec![],
                 })
                 .await
@@ -161,7 +162,7 @@ pub async fn transaction_subscribe(
                 let parsed_tx = message.map(|msg| match msg.update_oneof {
                     Some(UpdateOneof::Transaction(transaction)) => {
                         let slot = transaction.slot;
-                        
+
                         transaction
                             .transaction
                             .and_then(|tx| {
