@@ -13,7 +13,7 @@ use {
     std::collections::HashMap,
     yellowstone_grpc_client::{GeyserGrpcClient, GeyserGrpcClientError},
     yellowstone_grpc_proto::prelude::{
-        subscribe_update::UpdateOneof, CommitmentLevel, SubscribeRequest,
+        subscribe_update::UpdateOneof, SubscribeRequest,
         SubscribeRequestFilterTransactions,
     },
 };
