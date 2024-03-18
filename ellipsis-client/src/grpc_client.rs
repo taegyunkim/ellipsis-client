@@ -114,6 +114,7 @@ pub async fn transaction_subscribe(
     sender: Sender<ParsedTransaction>,
     accounts_to_include: Vec<Pubkey>,
     accounts_to_exclude: Vec<Pubkey>,
+    commitment: Option<i32>,
 ) -> anyhow::Result<()> {
     let mut transactions = HashMap::new();
     transactions.insert(
@@ -152,7 +153,7 @@ pub async fn transaction_subscribe(
                     transactions,
                     blocks: HashMap::new(),
                     blocks_meta: HashMap::new(),
-                    commitment: Some(CommitmentLevel::Confirmed.into()),
+                    commitment,
                     accounts_data_slice: vec![],
                 })
                 .await
